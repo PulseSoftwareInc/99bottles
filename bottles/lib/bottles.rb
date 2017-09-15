@@ -1,5 +1,4 @@
 class Bottles
-
   def song
     verses(99, 0)
   end
@@ -9,48 +8,59 @@ class Bottles
   end
 
   def verse(number)
-    "#{count(number).capitalize} #{unit(number)} of beer on the wall, #{count(number)} #{unit(number)} of beer.\n#{action(number)}, #{count(successor(number))} #{unit(successor(number))} of beer on the wall.\n"
+    bottle_number = BottleNumber.new(number)
+
+    "#{bottle_number.count.capitalize} #{bottle_number.unit} of beer on the wall, "\
+    "#{bottle_number.count} #{bottle_number.unit} of beer.\n"\
+    "#{bottle_number.action}, "\
+    "#{bottle_number.successor.count} #{bottle_number.successor.unit} of beer on the wall.\n"
   end
 
-  private
+  class BottleNumber
+    attr_reader :number
 
-  def action(number)
-    if number == 0
-      'Go to the store and buy some more'
-    else
-      "Take #{pronoun(number)} down and pass it around"
+    def initialize(number)
+      @number = number
     end
-  end
 
-  def successor(number)
-    if number == 0
-      99
-    else
-      number - 1
+    def action
+      if number == 0
+        'Go to the store and buy some more'
+      else
+        "Take #{pronoun} down and pass it around"
+      end
     end
-  end
 
-  def count(number)
-    if number == 0
-      'no more'
-    else
-      number.to_s
+    def successor
+      if number == 0
+        BottleNumber.new(99)
+      else
+        BottleNumber.new(number - 1)
+      end
     end
-  end
 
-  def pronoun(number)
-    if number == 1
-      'it'
-    else
-      'one'
+    def count
+      if number == 0
+        'no more'
+      else
+        number.to_s
+      end
     end
-  end
 
-  def unit(number)
-    if number == 1
-      'bottle'
-    else
-      'bottles'
+    def pronoun
+      if number == 1
+        'it'
+      else
+        'one'
+      end
+    end
+
+    def unit
+      if number == 1
+        'bottle'
+      else
+        'bottles'
+      end
     end
   end
 end
